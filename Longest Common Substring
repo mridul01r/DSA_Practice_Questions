@@ -1,0 +1,45 @@
+Longest Common Substring
+link - https://www.geeksforgeeks.org/problems/longest-common-substring1452/1
+difficulty - Medium
+
+Solution 1- recursion --> TLE
+
+class Solution {
+    public int helper(String s1, String s2, int i, int j, int cnt){
+        if(i == s1.length() || j == s2.length()){
+            return cnt;
+        }
+        
+        if(s1.charAt(i) == s2.charAt(j)){
+            cnt = helper(s1, s2, i + 1, j + 1, cnt + 1);
+        }
+        
+        int skip1 = helper(s1, s2, i + 1, j, 0);
+        int skip2 = helper(s1, s2, i, j + 1, 0);
+        return Math.max(cnt, Math.max(skip1, skip2));
+    }
+    public int longestCommonSubstr(String s1, String s2) {
+        return helper(s1, s2, 0, 0, 0);
+        
+    }
+}
+
+Solution 2 - DP --> O(n*m)
+
+class Solution {
+    public int longestCommonSubstr(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int ans = 0;
+        int[][] dp = new int[n + 1][m + 1];
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= m; j++){
+                if(s1.charAt(i - 1) == s2.charAt(j - 1)){
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                ans = Math.max(dp[i][j], ans);
+            }
+        }
+        return ans;
+    }
+}
