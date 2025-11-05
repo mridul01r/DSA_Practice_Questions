@@ -1,0 +1,49 @@
+516. Longest Palindromic Subsequence
+link - https://leetcode.com/problems/longest-palindromic-subsequence/description/
+difficulty - medium
+
+Solution 1 - Recursive Approach -> TLE
+class Solution {
+    public boolean isPalindrome(StringBuilder sb){
+        if(sb.length() == 0) return true;
+        int n = sb.length();
+        int mid = n/2;
+        for(int i = 0; i < mid; i++){
+            if(sb.charAt(i) != sb.charAt(n - i - 1)) return false;
+        }
+        return true;
+    }
+
+    public int helper(String str, int indx, StringBuilder sb){
+        if(indx == str.length()){
+            if(isPalindrome(sb)) return sb.length();
+            return 0;
+        }
+        sb.append(str.charAt(indx));
+        int pick = helper(str, indx + 1, sb);
+        sb.deleteCharAt(sb.length() - 1);
+        int notPick = helper(str, indx + 1, sb);
+        return Math.max(pick, notPick);
+       
+    }
+    public int longestPalindromeSubseq(String s) {
+        return helper(s, 0, new StringBuilder());
+    }
+}
+
+Solution 2 - DP --> O(n*n)
+class Solution {
+    
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        int[][] dp = new int[n + 1][n + 1];
+
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= n; j++){
+                if(s.charAt(i - 1) == s.charAt(n - j)) dp[i][j] = dp[i - 1][j - 1] + 1;
+                else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+        return dp[n][n];
+    }
+}
