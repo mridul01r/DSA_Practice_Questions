@@ -1,0 +1,50 @@
+115. Distinct Subsequences
+Link - https://leetcode.com/problems/distinct-subsequences/description/
+difficulty - hard
+
+Solution 1 - Recursive Approach - TLE --> O(n*2^n) where n is the length of 's' String
+
+class Solution {
+    public int helper(String s, String t, int i, StringBuilder sb){
+        if(i == s.length()){
+            if(sb.toString().equals(t)){
+                return 1;
+            }
+            return 0;
+        }
+        sb.append(s.charAt(i));
+        int pick = helper(s, t, i + 1, sb);
+        sb.deleteCharAt(sb.length() - 1);
+        int notPick = helper(s, t, i + 1, sb);
+
+        return pick + notPick;
+    }
+    public int numDistinct(String s, String t) {
+        return  helper(s, t, 0, new StringBuilder());
+    }
+}
+
+Solution 2 - DP --> O(m*n)
+class Solution {
+    public int numDistinct(String s, String t) {
+        int n = s.length();
+        int m = t.length();
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = 1;
+        }
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (t.charAt(i - 1) == s.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i][j - 1];
+                } else {
+                    dp[i][j] = dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
