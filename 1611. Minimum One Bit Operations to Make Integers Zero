@@ -1,0 +1,15 @@
+1611. Minimum One Bit Operations to Make Integers Zero
+link - https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/description/?envType=daily-question&envId=2025-11-08
+Difficulty - Hard
+
+Solution - O(log(n))
+class Solution {
+    public int minimumOneBitOperations(int n) {
+        int ans = 0;
+        while(n > 0){
+            ans = ans ^ n;
+            n = n >> 1;
+        }
+        return ans;
+    }
+}
