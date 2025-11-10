@@ -1,0 +1,26 @@
+3542. Minimum Operations to Convert All Elements to Zero
+Link - https://leetcode.com/problems/minimum-operations-to-convert-all-elements-to-zero/description/?envType=daily-question&envId=2025-11-10
+Difficulty - Medium;
+
+Solution
+class Solution {
+    public int minOperations(int[] nums) {
+        int n = nums.length;
+        int[] dummy = new int[n + 1];
+
+        int cnt = 0, top = 0;
+        for(int i = 0; i < n; i++){
+            int curr = nums[i];
+
+            while(curr < dummy[top]){
+                top--;
+                cnt++;
+            }
+
+            if(dummy[top] != curr){
+                dummy[++top] = curr;
+            } 
+        }
+        return cnt+top;
+    }
+}
