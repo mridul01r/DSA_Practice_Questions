@@ -1,0 +1,19 @@
+2154. Keep Multiplying Found Values by Two
+Link - https://leetcode.com/problems/keep-multiplying-found-values-by-two/description/?envType=daily-question&envId=2025-11-19
+Difficulty - Easy
+
+Solution - O(no of elements present * n)
+class Solution {
+    public boolean helper(int[] nums, int original){
+        for(int i = 0; i < nums.length; i++){
+            if(original == nums[i]) return true;
+        }
+        return false;
+    }
+    public int findFinalValue(int[] nums, int original) {
+        while(helper(nums, original)){
+            original *= 2;
+        }
+        return original;
+    }
+}
