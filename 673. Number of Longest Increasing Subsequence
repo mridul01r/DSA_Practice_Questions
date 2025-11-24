@@ -1,0 +1,49 @@
+673. Number of Longest Increasing Subsequence
+Link - https://leetcode.com/problems/number-of-longest-increasing-subsequence/
+Difficulty - Medium
+
+Solution - DP - O(n^2)
+class Solution {
+    // public int helper(int[][] dp, int[] nums, int i, int prev){
+    //     if(i == nums.length) return 0;
+    //     if(dp[i][prev + 1] != -1) return dp[i][prev + 1];
+    //     int notPick = helper(dp, nums, i + 1, prev);
+    //     int pick = 0;
+    //     if(prev == -1 || nums[i] > nums[prev]){
+    //         pick = 1 + helper(dp, nums, i + 1, i);
+    //     }
+    //     return dp[i][prev + 1] = Math.max(pick, notPick);
+        
+    // }
+    public int findNumberOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        int[] count = new int[n];
+
+        for(int i = 0; i < n; i++){
+            dp[i] = 1;
+            count[i] = 1;
+            for(int j = 0; j <= i; j++){
+                if(nums[i] > nums[j]){
+                    if(dp[j] + 1 > dp[i]){
+                        dp[i] = dp[j] + 1;
+                        count[i] = count[j];
+                    }else if(dp[j] + 1 == dp[i]){
+                        count[i] += count[j];
+                    }
+                }
+            }
+        }
+        int maxLen = 0;
+        int cnt = 0;
+        for(int i = 0; i < n; i++){
+            if(dp[i] > maxLen){
+                maxLen = dp[i];
+                cnt = count[i];
+            }else if(dp[i] == maxLen){
+                cnt += count[i];
+            }
+        }
+        return cnt;
+    }
+}
