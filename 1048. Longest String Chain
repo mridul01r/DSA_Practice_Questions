@@ -1,0 +1,38 @@
+1048. Longest String Chain
+Link - https://leetcode.com/problems/longest-string-chain/
+Difficulty - Medium
+
+Solution - DP -> O(n * l^2 Log(n))
+
+class Solution {
+    public boolean helper(String s1, String s2){
+        int i = 0, j = 0;
+        while(i < s1.length() && j < s2.length()){
+            if(s1.charAt(i) == s2.charAt(j)){
+                i++;
+                j++;
+            }else j++;
+        }
+        return i == s1.length();
+    }
+    public int longestStrChain(String[] words) {
+        int n = words.length;
+        int maxLen = 1;
+        Arrays.sort(words, (a, b) -> a.length() - b.length()); 
+        int[] dp = new int[n];
+        
+        for (int i = 0; i < n; i++) {
+            String curr = words[i];
+            int len = curr.length();
+            dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                String prev = words[j];
+                if(prev.length() == len - 1 && helper(prev, curr)) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLen = Math.max(dp[i], maxLen);
+        }
+        return maxLen;
+    }
+}
