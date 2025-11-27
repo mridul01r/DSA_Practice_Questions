@@ -1,0 +1,76 @@
+Matrix Chain Multiplication
+Difficulty - Hard
+
+Solution - Recursive Approach --> TLE
+class Solution {
+    public static int helper(int[] arr, int i, int j){
+        if(i == j) return 0;
+        int ans = Integer.MAX_VALUE;
+        for(int k = i; k < j; k++){
+            int cost1 = helper(dp, arr, i, k);
+            int cost2 = helper(dp, arr, k + 1, j);
+            int cost3 = arr[i - 1] * arr[k] * arr[j];
+            int finalCost = cost1 + cost2 + cost3;
+            ans = Math.min(finalCost, ans);
+        }
+        return ans;
+    }
+    static int matrixMultiplication(int arr[]) {
+        // code here
+        int n = arr.length;
+        return helper(arr, 1, n - 1);
+    }
+
+Solution 2 - Memoization - O(n^2)
+class Solution {
+    public static int helper(int[][] dp, int[] arr, int i, int j){
+        if(i == j) return 0;
+        int ans = Integer.MAX_VALUE;
+        if(dp[i][j] != -1) return dp[i][j];
+        for(int k = i; k < j; k++){
+            int cost1 = helper(dp, arr, i, k);
+            int cost2 = helper(dp, arr, k + 1, j);
+            int cost3 = arr[i - 1] * arr[k] * arr[j];
+            int finalCost = cost1 + cost2 + cost3;
+            ans = Math.min(finalCost, ans);
+        }
+        return dp[i][j] = ans;
+    }
+    static int matrixMultiplication(int arr[]) {
+        // code here
+        int n = arr.length;
+        int[][] dp = new int[n][n];
+        for(int[] d : dp){
+            Arrays.fill(d, -1);
+        }
+        return helper(dp, arr, 1, n - 1);
+    }
+
+Solution 3 - DP - O(n^2)
+class Solution {
+
+    static int matrixMultiplication(int arr[]) {
+        int n = arr.length;
+        int[][] dp = new int[n][n];
+
+        for (int len = 2; len <= n - 1; len++) {
+            for (int i = 1; i <= n - len; i++) {
+                int j = i + len - 1;
+                dp[i][j] = Integer.MAX_VALUE;
+
+                for (int k = i; k < j; k++) {              
+                    int cost1 = dp[i][k];
+                    int cost2 = dp[k + 1][j];
+                    int cost3 = arr[i - 1] * arr[k] * arr[j];
+
+                    int finalCost = cost1 + cost2 + cost3;
+                    if (finalCost < dp[i][j]) {
+                        dp[i][j] = finalCost;
+                    }
+                }
+            }
+        }
+
+        return dp[1][n - 1];
+    }
+}
