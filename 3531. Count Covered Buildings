@@ -1,0 +1,126 @@
+3531. Count Covered Buildings
+Link - https://leetcode.com/problems/count-covered-buildings/description/?envType=daily-question&envId=2025-12-11
+Difficulty - Medium
+
+Solution - O(n * b)
+class Solution {
+    private String key(int x, int y) {
+        return x + "," + y;
+    }
+
+    public boolean left(int n, int[] build, HashSet<String> coordinates) {
+        int x = build[0], y = build[1];
+        for (int j = y - 1; j >= 1; j--) {
+            if (coordinates.contains(key(x, j))) return true;
+        }
+        return false;
+    }
+
+    public boolean right(int n, int[] build, HashSet<String> coordinates) {
+        int x = build[0], y = build[1];
+        for (int j = y + 1; j <= n; j++) {
+            if (coordinates.contains(key(x, j))) return true;
+        }
+        return false;
+    }
+
+    public boolean top(int n, int[] build, HashSet<String> coordinates) {
+        int x = build[0], y = build[1];
+        for (int i = x - 1; i >= 1; i--) {
+            if (coordinates.contains(key(i, y))) return true;
+        }
+        return false;
+    }
+
+    public boolean bottom(int n, int[] build, HashSet<String> coordinates) {
+        int x = build[0], y = build[1];
+        for (int i = x + 1; i <= n; i++) {
+            if (coordinates.contains(key(i, y))) return true;
+        }
+        return false;
+    }
+
+    public int countCoveredBuildings(int n, int[][] buildings) {
+        HashSet<String> coordinates = new HashSet<>();
+        for (int[] b : buildings) {
+            coordinates.add(key(b[0], b[1]));
+        }
+
+        int cnt = 0;
+        for (int[] curr : buildings) {
+            if (left(n, curr, coordinates)
+                    && right(n, curr, coordinates)
+                    && top(n, curr, coordinates)
+                    && bottom(n, curr, coordinates)) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+}
+
+Solution 2 - O(n)
+class Solution {
+    // private String key(int x, int y) {
+    //     return x + "," + y;
+    // }
+
+    // public boolean left(int n, int[] build, HashSet<String> coordinates) {
+    //     int x = build[0], y = build[1];
+    //     for (int j = y - 1; j >= 1; j--) {
+    //         if (coordinates.contains(key(x, j))) return true;
+    //     }
+    //     return false;
+    // }
+
+    // public boolean right(int n, int[] build, HashSet<String> coordinates) {
+    //     int x = build[0], y = build[1];
+    //     for (int j = y + 1; j <= n; j++) {
+    //         if (coordinates.contains(key(x, j))) return true;
+    //     }
+    //     return false;
+    // }
+
+    // public boolean top(int n, int[] build, HashSet<String> coordinates) {
+    //     int x = build[0], y = build[1];
+    //     for (int i = x - 1; i >= 1; i--) {
+    //         if (coordinates.contains(key(i, y))) return true;
+    //     }
+    //     return false;
+    // }
+
+    // public boolean bottom(int n, int[] build, HashSet<String> coordinates) {
+    //     int x = build[0], y = build[1];
+    //     for (int i = x + 1; i <= n; i++) {
+    //         if (coordinates.contains(key(i, y))) return true;
+    //     }
+    //     return false;
+    // }
+
+    public int countCoveredBuildings(int n, int[][] buildings) {
+        int[] top = new int[n + 1];
+        int[] bottom = new int[n + 1];
+        int[] right = new int[n + 1];
+        int[] left = new int[n + 1];
+
+        Arrays.fill(top, n + 1);
+        Arrays.fill(left, n + 1);
+        Arrays.fill(bottom, 0);
+        Arrays.fill(right, 0);
+
+        for(int[] build : buildings){
+            int x = build[0], y = build[1];
+            top[x] = Math.min(top[x], y);
+            bottom[x] = Math.max(bottom[x], y);
+            left[y] = Math.min(left[y], x); 
+            right[y] = Math.max(right[y], x);
+        }
+
+        int cnt = 0; 
+        for(int[] build : buildings){
+            int x = build[0], y = build[1];
+            if(top[x] < y && bottom[x] > y && left[y] < x && right[y] > x) cnt++;
+        }
+        return cnt;
+    }
+}
