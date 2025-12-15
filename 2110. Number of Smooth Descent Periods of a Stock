@@ -1,0 +1,39 @@
+2110. Number of Smooth Descent Periods of a Stock
+Link - https://leetcode.com/problems/number-of-smooth-descent-periods-of-a-stock/?envType=daily-question&envId=2025-12-15
+Difficulty - Medium
+
+Solution 1 - using a math formula -O(n)
+class Solution {
+    public long getDescentPeriods(int[] prices) {
+        long cnt = 0;
+        int n = prices.length;
+        long len = 1;
+        for(int i = 1; i < n; i++){
+            if(prices[i - 1] - prices[i] == 1){
+                len++;
+            }else{
+                cnt += (len * (len - 1)) / 2;
+                len = 1;
+            }
+        }
+        if(len > 1) cnt += (len * (len - 1)) / 2;
+        return cnt + n;
+    }
+}
+
+Solution 2 - dp - O(n)
+class Solution {
+    public long getDescentPeriods(int[] prices) {
+         long cnt = 0;
+         int n = prices.length;
+         int[] dp = new int[n];
+         Arrays.fill(dp, 1);
+         for(int i = 1; i < n; i++){
+             if(prices[i - 1] - prices[i] == 1){
+                 dp[i] = dp[i - 1] + 1;
+             }
+         }
+         for(int num : dp) cnt += num;
+         return cnt;
+    }
+}
