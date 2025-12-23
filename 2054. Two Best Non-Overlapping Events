@@ -1,0 +1,35 @@
+2054. Two Best Non-Overlapping Events
+Difficulty - Medium
+
+Solution - O(n* log(n))
+class Solution {
+    public int maxNextEven(int l, int r, int end, int[] sufMax, int[][] events){
+        int max = 0;
+        while(l <= r){
+            int mid = l + (r - l)/2;
+            if(events[mid][0] > end){
+                max = sufMax[mid];
+                r = mid - 1;
+            }else l = mid +  1;
+        }
+        return max;
+    }
+    public int maxTwoEvents(int[][] events) {
+        int n = events.length;
+        Arrays.sort(events, (a,b) -> Integer.compare(a[0], b[0]));
+        int[] sufSum = new int[n];
+
+        sufSum[n - 1] = events[n - 1][2];
+        for(int i = n - 2; i >= 0; i--){
+            sufSum[i] = Math.max(sufSum[i + 1], events[i][2]);
+        }
+
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            int sum = events[i][2];
+            sum += maxNextEven(i, n - 1, events[i][1], sufSum, events);
+            ans = Math.max(ans, sum);
+        }
+        return ans;
+    }
+}
