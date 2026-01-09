@@ -1,0 +1,36 @@
+1123. Lowest Common Ancestor of Deepest Leaves
+Link - https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/description/
+Difficulty - Medium
+
+Solution - O(n) + O(h)
+class Solution {
+    public int findingMaxDept(TreeNode root){
+        if(root == null) return 0;
+        int leftNode = findingMaxDept(root.left);
+        int rightNode = findingMaxDept(root.right);
+        return 1 + Math.max(leftNode, rightNode);
+    }
+    
+    public boolean isLeaf(TreeNode root){
+        return root.left == null && root.right == null;
+    }
+    
+    public TreeNode findLca(TreeNode root, int dept, int maxDept){
+        if(root == null) return null;
+        
+        if(isLeaf(root) && dept == maxDept) return root;
+        
+        TreeNode leftLca = findLca(root.left, dept + 1, maxDept);
+        TreeNode rightLca = findLca(root.right, dept + 1, maxDept);
+        
+        if(leftLca != null && rightLca != null) return root;
+        
+        return leftLca != null ? leftLca : rightLca;
+    }
+    
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        if(root == null) return null;
+        int maxDept = findingMaxDept(root) - 1; 
+        return findLca(root, 0, maxDept);
+    }
+}
