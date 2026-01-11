@@ -1,0 +1,63 @@
+85. Maximal Rectangle
+Link - https://leetcode.com/problems/maximal-rectangle/?envType=daily-question&envId=2026-01-11
+Difficulty - Hard
+
+Solution - O(n * m)
+
+class Solution {
+    public static void generatingNSE(int[] nums, int[] nse){
+        int size = nums.length;
+        Deque<Integer> st = new ArrayDeque<>();
+        for(int i = size - 1; i >= 0; i--){
+            while(!st.isEmpty() && nums[st.peek()] >= nums[i]){
+                st.pop();
+            }
+            nse[i] = st.isEmpty() ? size : st.peek();
+            st.push(i);
+        }
+    }
+
+    public static void generatingPSE(int[] nums, int[] pse){
+        int size = nums.length;
+        Deque<Integer> st = new ArrayDeque<>();
+        for(int i = 0; i < size; i++){
+            while(!st.isEmpty() && nums[st.peek()] >= nums[i]){
+                st.pop();
+            }
+            pse[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+    }
+
+    public int maximalRectangle(char[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int[][] newMat = new int[n][m];
+
+        for(int j = 0; j < m; j++){
+            int prefixSum = 0;
+            for(int i = 0; i < n; i++){
+                if(matrix[i][j] == '0'){
+                    prefixSum = 0;
+                } else {
+                    prefixSum += 1;
+                }
+                newMat[i][j] = prefixSum;
+            }
+        }
+
+        int maximal = 0;
+        for(int[] row : newMat){
+            int[] nse = new int[m];
+            int[] pse = new int[m];
+            generatingNSE(row, nse);
+            generatingPSE(row, pse);
+
+            for(int i = 0; i < m; i++){
+                maximal = Math.max(maximal, row[i] * (nse[i] - pse[i] - 1));
+            }
+        }
+        return maximal;
+    }
+}
