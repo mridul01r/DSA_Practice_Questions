@@ -1,0 +1,44 @@
+3453. Separate Squares I
+Link - https://leetcode.com/problems/separate-squares-i/?envType=daily-question&envId=2026-01-13
+Difficulty - Medium
+
+Solution - O(n)
+class Solution {
+    public double lowerArea(double mid, int[][] squares) {
+        double area = 0;
+        for (int[] square : squares) {
+            double y = square[1], len = square[2];
+
+            if (mid >= y + len) {
+                area += len * len;
+            } else if (mid > y) {
+                area += len * (mid - y);
+            }
+        }
+        return area;
+    }
+    public double separateSquares(int[][] squares) {
+        double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
+        double totalArea = 0;
+
+        for (int[] square : squares) {
+            totalArea += (double) square[2] * square[2];
+            min = Math.min(min, square[1]);
+            max = Math.max(max, square[1] + square[2]);
+        }
+
+        double target = totalArea / 2;
+        double l = min, r = max;
+
+        while (r - l > 1e-5) {
+            double mid = l + (r - l) / 2;
+
+            if (lowerArea(mid, squares) < target) {
+                l = mid;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
+    }
+}
