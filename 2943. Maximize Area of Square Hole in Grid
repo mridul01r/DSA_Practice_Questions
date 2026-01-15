@@ -1,0 +1,37 @@
+2943. Maximize Area of Square Hole in Grid
+Link - https://leetcode.com/problems/maximize-area-of-square-hole-in-grid/?envType=daily-question&envId=2026-01-15 
+Difficulty - Medium
+
+Solution - O(n + m)
+class Solution {
+    public int maximizeSquareHoleArea(int n, int m, int[] hBars, int[] vBars) {
+        Arrays.sort(hBars);
+        Arrays.sort(vBars);
+
+        int maxH = hBars.length > 0 ? 1 : 0;
+        int maxV = vBars.length > 0 ? 1 : 0;
+
+        int cH = 1;
+        for (int i = 1; i < hBars.length; i++) {
+            if (hBars[i] == hBars[i - 1] + 1) {
+                cH++;
+            } else {
+                cH = 1;
+            }
+            maxH = Math.max(maxH, cH);
+        }
+
+        int cV = 1;
+        for (int i = 1; i < vBars.length; i++) {
+            if (vBars[i] == vBars[i - 1] + 1) {
+                cV++;
+            } else {
+                cV = 1;
+            }
+            maxV = Math.max(maxV, cV);
+        }
+
+        int side = Math.min(maxH, maxV) + 1;
+        return side * side;
+    }
+}
