@@ -1,0 +1,43 @@
+2975. Maximum Square Area by Removing Fences From a Field
+Link - https://leetcode.com/problems/maximum-square-area-by-removing-fences-from-a-field/description/?envType=daily-question&envId=2026-01-16
+
+Solution - O(n * n + m * m)
+
+class Solution {
+    public int maximizeSquareArea(int m, int n, int[] hFences, int[] vFences) {
+        int[] h = new int[hFences.length + 2];
+        int[] v = new int[vFences.length + 2];
+
+        h[0] = 1;
+        v[0] = 1;
+
+        for (int i = 0; i < hFences.length; i++) h[i + 1] = hFences[i];
+        for (int i = 0; i < vFences.length; i++) v[i + 1] = vFences[i];
+
+        h[h.length - 1] = m;
+        v[v.length - 1] = n;
+
+        Arrays.sort(h);
+        Arrays.sort(v);
+
+        Set<Integer> diff = new HashSet<>();
+        for (int i = 0; i < h.length; i++) {
+            for (int j = i + 1; j < h.length; j++) {
+                diff.add(h[j] - h[i]);
+            }
+        }
+
+        long side = -1;
+        for (int i = 0; i < v.length; i++) {
+            for (int j = i + 1; j < v.length; j++) {
+                int d = v[j] - v[i];
+                if (diff.contains(d)) {
+                    side = Math.max(side, d);
+                }
+            }
+        }
+
+        if (side == -1) return -1;
+        return (int) ((side * side) % 1_000_000_007);
+    }
+}
