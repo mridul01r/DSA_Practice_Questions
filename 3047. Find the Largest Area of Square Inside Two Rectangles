@@ -1,0 +1,68 @@
+3047. Find the Largest Area of a Square Inside Two Rectangles
+Link - https://leetcode.com/problems/find-the-largest-area-of-square-inside-two-rectangles/description/?envType=daily-question&envId=2026-01-17
+Difficulty - Medium
+
+Solution 1 - O(n * n)
+class Solution {
+    public long largestSquareArea(int[][] bottomLeft, int[][] topRight) {
+        long maxArea = 0;
+        int n = bottomLeft.length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+
+                int x1 = bottomLeft[i][0];
+                int y1 = bottomLeft[i][1];
+                int x2 = topRight[i][0];
+                int y2 = topRight[i][1];
+
+                int x3 = bottomLeft[j][0];
+                int y3 = bottomLeft[j][1];
+                int x4 = topRight[j][0];
+                int y4 = topRight[j][1];
+
+                if (x1 < x4 && x3 < x2 && y1 < y4 && y3 < y2) {
+                    int l = Math.max(x1, x3);
+                    int b = Math.max(y1, y3);
+                    int r = Math.min(x2, x4);
+                    int t = Math.min(y2, y4);
+
+                    int width = r - l;
+                    int height = t - b;
+
+                    int side = Math.min(width, height);
+                    long squareArea = (long) side * side;
+
+                    maxArea = Math.max(maxArea, squareArea);
+                }
+            }
+        }
+        return maxArea;
+    }
+}
+
+Solution 2 - more optimized - O(n * n)
+class Solution {
+
+    public long largestSquareArea(int[][] bottomLeft, int[][] topRight) {
+        int n = bottomLeft.length;
+        long maxSide = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int w =
+                    Math.min(topRight[i][0], topRight[j][0]) -
+                    Math.max(bottomLeft[i][0], bottomLeft[j][0]);
+                int h =
+                    Math.min(topRight[i][1], topRight[j][1]) -
+                    Math.max(bottomLeft[i][1], bottomLeft[j][1]);
+                int side = Math.min(w, h);
+
+                maxSide = Math.max(maxSide, side);
+            }
+        }
+
+        return maxSide * maxSide;
+    }
+}
+
