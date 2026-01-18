@@ -1,0 +1,36 @@
+Element with left side smaller and right side greater
+Difficulty - Easy
+
+Solution - O(n)
+
+class Solution {
+    public int findElement(int[] arr) {
+        int n = arr.length;
+        if (n < 3) return -1;
+
+        int[] leftMax = new int[n];
+        int[] rightMin = new int[n];
+
+        int maxL = arr[0];
+        leftMax[0] = arr[0];
+        for (int i = 1; i < n; i++) {
+            maxL = Math.max(maxL, arr[i]);
+            leftMax[i] = maxL;
+        }
+
+        int minR = arr[n - 1];
+        rightMin[n - 1] = arr[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            minR = Math.min(minR, arr[i]);
+            rightMin[i] = minR;
+        }
+
+        for (int i = 1; i < n - 1; i++) {
+            if (arr[i] > leftMax[i - 1] && arr[i] < rightMin[i + 1]) {
+                return arr[i];
+            }
+        }
+
+        return -1;
+    }
+}
