@@ -1,0 +1,24 @@
+3314. Construct the Minimum Bitwise Array I
+Difficulty - Easy
+
+Solution - O(n * max(nums[i]))
+class Solution {
+    public int[] minBitwiseArray(List<Integer> nums) {
+        int n = nums.size();
+        int[] ans = new int[n];
+        int indx = 0;
+        for(int j = 0; j < n; j++){
+            boolean isFound = false;
+            for(int i = 1; i <= nums.get(j); i++){
+                if((i | i + 1) == nums.get(j)){
+                    ans[indx] = i;
+                    isFound = true;
+                    break;
+                }
+                if(!isFound) ans[indx] = -1;
+            }
+            indx++;
+        }
+        return ans;
+    }
+}
