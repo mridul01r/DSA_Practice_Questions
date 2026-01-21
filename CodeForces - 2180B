@@ -1,0 +1,28 @@
+CodeForces - 2180B
+Rating - 800
+
+Solution 
+
+import java.util.*;
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        for(int i = 0; i < t; i++){
+            int n = sc.nextInt();
+            String[] arr = new String[n];
+            for(int j = 0; j < n; j++) arr[j] = sc.next();
+            sc.nextLine();
+            String ans = arr[0];
+            for(int j = 1; j < n; j++){
+                String s = arr[j] + ans;
+                String e = ans + arr[j];
+                
+                if(s.compareTo(e) < 0) ans = s;
+                else if(s.compareTo(e) > 0) ans = e;
+                else ans = s;
+            }
+            System.out.println(ans);
+        }
+    }
+}
