@@ -1,0 +1,25 @@
+Interleave the First Half of the Queue with Second Half
+Difficulty: Medium
+
+Solution - O(n)
+class Solution {
+    public void rearrangeQueue(Queue<Integer> q) {
+        int n = q.size();
+        if (n <= 2) return;
+        ArrayList<Integer> firstHalf = new ArrayList<>();
+        ArrayList<Integer> secondHalf = new ArrayList<>();
+        
+        for (int i = 0; i < n / 2; i++) {
+            firstHalf.add(q.poll());
+        }
+        while (!q.isEmpty()) {
+            secondHalf.add(q.poll());
+        }
+        
+        int i = 0, j = 0;
+        while (i < firstHalf.size() || j < secondHalf.size()) {
+            if (i < firstHalf.size()) q.add(firstHalf.get(i++));
+            if (j < secondHalf.size()) q.add(secondHalf.get(j++));
+        }
+    }
+}
