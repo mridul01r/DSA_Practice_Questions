@@ -1,0 +1,16 @@
+744. Find Smallest Letter Greater Than Target
+Difficulty - Medium
+
+
+Solution - O(n)
+
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int min = 100;
+        for(char ch : letters){
+            int curr = ch - 'a';
+            if(curr > (target - 'a')) return ch;
+        }
+        return letters[0];
+    }
+}
