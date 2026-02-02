@@ -1,0 +1,19 @@
+Max Circular Subarray Sum
+Difficulty: Hard
+
+Solution - O(n)
+class Solution {
+    public int maxCircularSum(int arr[]) {
+        if (arr.length == 0) return 0;
+        int curMax = arr[0], curMin = arr[0], total = arr[0];
+        int maxSum = arr[0], minSum = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            total += arr[i];
+            curMax = Math.max(arr[i], arr[i] + curMax);
+            curMin = Math.min(arr[i], arr[i] + curMin);
+            maxSum = Math.max(maxSum, curMax);
+            minSum = Math.min(minSum, curMin);
+        }
+        return total - minSum == 0 ? maxSum : Math.max(maxSum, total - minSum);
+    }
+}
