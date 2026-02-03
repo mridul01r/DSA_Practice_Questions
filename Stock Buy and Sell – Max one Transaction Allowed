@@ -1,0 +1,17 @@
+Stock Buy and Sell – Max one Transaction Allowed
+Difficulty: Easy
+
+Solution - O(n)
+class Solution {
+    public int maxProfit(int[] prices) {
+        // Code here
+        int maxProfit = 0;
+        int buy = prices[0];
+        for(int j = 1; j < prices.length; j++){
+            int sell = prices[j];
+            if(buy > sell) buy = sell;
+            else maxProfit = Math.max(maxProfit, sell - buy);
+        }
+        return maxProfit;
+    }
+}
