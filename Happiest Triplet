@@ -1,0 +1,37 @@
+Happiest Triplet
+Difficulty: Medium
+
+Solution - O(n * log(n))
+class Solution {
+    int[] smallestDiff(int a[], int b[], int c[]) {
+        // write code here
+        int n = a.length;
+        Arrays.sort(a);
+        Arrays.sort(b);
+        Arrays.sort(c);
+        
+        int minDiff = Integer.MAX_VALUE;
+        int v1 = a[0], v2 = b[0], v3 = c[0];
+        int i = 0, j = 0, k = 0;
+        while(i < n && j < n && k < n){
+            int num1 = a[i];
+            int num2 = b[j];
+            int num3 = c[k];
+            
+            int min = Math.min(a[i], Math.min(b[j], c[k]));
+            int max = Math.max(a[i], Math.max(b[j], c[k]));
+            
+            if(minDiff > max - min){
+                minDiff = max - min;
+                v1 = max;
+                v2 = num1 + num2 + num3 - (max + min);
+                v3 = min;
+            }
+            if(min == num1) i++;
+            else if(min == num2) j++;
+            else k++;
+        }
+        
+        return new int[]{v1, v2, v3};
+    }
+}
