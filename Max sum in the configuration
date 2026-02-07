@@ -1,0 +1,23 @@
+Max sum in the configuration
+Difficulty: Medium
+
+Solution - O(n)
+class Solution {
+    public int maxSum(int[] arr) {
+        int n = arr.length;
+        int arrSum = 0, mulSum = 0;
+        
+        for(int i = 0; i < n; i++){
+            arrSum += arr[i];
+            mulSum += i * arr[i];
+        }
+        
+        int max = mulSum;
+        
+        for(int i = 1; i < n; i++){
+            mulSum = mulSum + arrSum - n * arr[n - i];  
+            max = Math.max(max, mulSum);
+        }
+        return max;
+    }
+}
