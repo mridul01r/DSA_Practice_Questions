@@ -1,0 +1,25 @@
+3719. Longest Balanced Subarray I
+Difficulty - Medium
+
+Solution - O(n * n)
+class Solution {
+    public int longestBalanced(int[] nums) {
+        int even = 0, odd = 0, ans = 0;
+        int n = nums.length;
+        for(int i = 0; i < n; i++){
+            HashSet<Integer> e = new HashSet<>();
+            HashSet<Integer> o = new HashSet<>();
+            if((nums[i] % 2) == 0) e.add(nums[i]);
+            else o.add(nums[i]);
+            for(int j = i + 1; j < n; j++){
+                if((nums[j] % 2) == 0) e.add(nums[j]);
+                else o.add(nums[j]);
+
+                if(e.size() == o.size()){
+                    ans = Math.max(ans, j - i + 1);
+                }
+            }
+        }
+        return ans;
+    }
+}
