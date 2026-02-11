@@ -1,0 +1,34 @@
+Equalize the Towers
+Difficulty: Medium
+
+Solution - n * (log(n))
+class Solution {
+    public int helper(int[] heights, int[] cost, int eq){
+        int totalCost = 0;
+        int n = cost.length;
+        for(int i = 0; i < n; i++) totalCost += Math.abs(eq - heights[i]) * cost[i];
+        return totalCost;
+        
+    }
+    public int minCost(int[] heights, int[] cost) {
+        // code here
+        int min = heights[0], max = heights[0];
+        for(int h : heights){
+            min = Math.min(min, h);
+            max = Math.max(max, h);
+        }
+        
+        while(min <= max){
+            int mid = min + (max - min)/ 2;
+            int val1 = helper(heights, cost, mid - 1);
+            int val2 = helper(heights, cost, mid);
+            int val3 = helper(heights, cost, mid + 1);
+            
+            if(val1 >= val2 && val3 >= val2) return val2;
+            else if(val2 > val1 && val3 > val1) max = mid - 1;
+            else min = mid + 1;
+        }
+        return helper(heights, cost, min);
+        
+    }
+}
