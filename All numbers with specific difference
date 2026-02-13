@@ -1,0 +1,27 @@
+All numbers with specific difference
+Difficulty: Hard
+
+Solution - O(log(n))
+class Solution {
+    public int getCount(int n, int d) {
+        int l = 1, r = n, ans = n + 1;
+        while(l <= r) {
+            int mid = l + (r - l) / 2;
+            int sum = 0;
+            int dummy = mid;
+            while(dummy > 0) {
+                int rem = dummy % 10;
+                sum += rem;
+                dummy /= 10;
+            }
+            
+            if(mid - sum >= d) {
+                ans = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return Math.max(0, n - ans + 1);
+    }
+}
