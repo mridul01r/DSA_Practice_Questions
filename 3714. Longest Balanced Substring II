@@ -1,0 +1,81 @@
+3714. Longest Balanced Substring II
+Difficulty - Medium
+
+class Solution {
+    public int helper(String s, char c1, char c2) {
+        int n = s.length();
+        int max = 0;
+        int diff = 0; 
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); 
+        
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            
+            if (c == c1) {
+                diff++;
+            } else if (c == c2) {
+                diff--;
+            } else {
+                map = new HashMap<>();
+                map.put(0, i); 
+                diff = 0;
+                continue;
+            }
+
+            if (map.containsKey(diff)) {
+                max = Math.max(max, i - map.get(diff));
+            } else {
+                map.put(diff, i);
+            }
+        }
+        return max;
+    }
+
+    public int longestBalanced(String s) {
+        int n = s.length();
+        int maxLen = 0;
+
+        int cnt = 0;
+        if (n > 0) maxLen = 1;
+        cnt = 1;
+        
+        for (int i = 1; i < n; i++) {
+            if (s.charAt(i) == s.charAt(i - 1)) {
+                cnt++;
+            } else {
+                cnt = 1;
+            }
+            maxLen = Math.max(maxLen, cnt);
+        }
+
+        maxLen = Math.max(maxLen, helper(s, 'a', 'b'));
+        maxLen = Math.max(maxLen, helper(s, 'a', 'c'));
+        maxLen = Math.max(maxLen, helper(s, 'b', 'c'));
+
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("0,0", -1);
+        
+        int a = 0, b = 0, c = 0;
+
+        for (int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+            if (ch == 'a') a++;
+            else if (ch == 'b') b++;
+            else if (ch == 'c') c++;
+
+            int diff1 = a - b;
+            int diff2 = b - c;
+            
+            String key = diff1 + "," + diff2;
+
+            if (map.containsKey(key)) {
+                maxLen = Math.max(maxLen, i - map.get(key));
+            } else {
+                map.put(key, i);
+            }
+        }
+        return maxLen;
+    }
+}
