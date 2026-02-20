@@ -1,0 +1,45 @@
+Form the Largest Number
+Difficulty: Medium
+
+Solution - O(n * log(n))
+
+class Solution {
+    public class Pair implements Comparable<Pair> {
+
+        String num;
+    
+        public Pair(String num) {
+            this.num = num;
+        }
+    
+        @Override
+        public int compareTo(Pair p) {
+    
+            String num1 = this.num;
+            String num2 = p.num;
+    
+            String a = num1 + num2;
+            String b = num2 + num1;
+            
+            return b.compareTo(a);
+        }
+    }
+    
+    public String findLargest(int[] arr) {
+        // code here
+        int n = arr.length;
+        
+        PriorityQueue<Pair> pq= new PriorityQueue<>();
+        for(int a : arr){
+            String str = "" + a;
+            pq.offer(new Pair(str));
+        }
+        StringBuilder sb = new StringBuilder();
+        if(pq.peek().num.compareTo("0") == 0) return "0";
+        while(!pq.isEmpty()){
+            Pair curr = pq.poll();
+            sb.append(curr.num);
+        }
+        return sb.toString();
+    }
+}
