@@ -1,0 +1,87 @@
+1022. Sum of Root To Leaf Binary Numbers
+Difficulty - Easy
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+Solution - 1
+class Solution {
+    public int helper(TreeNode root, int curr){
+        if(root == null) return 0;
+        curr = curr * 2 + root.val;
+        if(root.left == null && root.right == null) return curr;
+        return helper(root.left, curr) + helper(root.right, curr);
+    }
+    public int sumRootToLeaf(TreeNode root) {
+        return helper(root, 0);
+       
+    }
+}
+
+Solution - 2
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int convert(StringBuilder s){
+        int n = s.length() - 1;
+        int i = 0;
+        int num = 0;
+        while(n >= 0){
+            if(s.charAt(n) == '1') num += (int)Math.pow(2, i);
+            i++;
+            n--;
+        }
+        return num;
+    }
+    public void helper(TreeNode root, ArrayList<StringBuilder> list, StringBuilder sb){
+        if(root == null){
+            return;
+        }
+        sb.append(root.val);
+        if(root.left == null && root.right == null) list.add(new StringBuilder(sb));
+        else{
+            helper(root.left, list, sb);
+            helper(root.right, list, sb);
+        } 
+        sb.deleteCharAt(sb.length() - 1);
+    }
+    
+    public int sumRootToLeaf(TreeNode root) {
+        if(root == null) return 0;
+
+        ArrayList<StringBuilder> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        helper(root, list, sb);
+
+        int sum = 0;
+        for(StringBuilder s : list){
+            sum += convert(s);
+        }
+        return sum;
+    }
+}
