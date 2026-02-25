@@ -1,0 +1,32 @@
+Longest Subarray with Majority Greater than K
+Difficulty: Medium
+
+Solution - O(n)
+
+class Solution {
+    public int longestSubarray(int[] arr, int k) {
+        int n = arr.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        int sum = 0, max = 0;
+        
+        for(int i = 0; i < n; i++){
+            
+            if(arr[i] > k) sum += 1;
+            else sum -= 1;
+            
+            if(sum > 0) {
+                max = i + 1;
+            } 
+            else {
+                if(map.containsKey(sum - 1)) {
+                    max = Math.max(max, i - map.get(sum - 1));
+                }
+            }
+            
+            map.putIfAbsent(sum, i);
+        }
+        
+        return max;
+    }
+}
