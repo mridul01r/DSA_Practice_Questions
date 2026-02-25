@@ -1,0 +1,39 @@
+1356. Sort Integers by The Number of 1 Bits
+Difficulty - Easy
+
+Solution - O(n)
+class Solution {
+    class Pair implements Comparable<Pair>{
+        int bits;
+        int num;
+        public Pair(int bits, int num){
+            this.bits = bits;
+            this.num = num;
+        }
+
+        @Override
+        public int compareTo(Pair p){
+            if(this.bits == p.bits) return this.num - p.num;
+            else return this.bits - p.bits;
+        }
+    }
+    public int[] sortByBits(int[] arr) {
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        int n = arr.length;
+
+        int[] ans = new int[n];
+
+        for(int i = 0; i < n; i++){
+            int bits = Integer.bitCount(arr[i]);
+            pq.offer(new Pair(bits, arr[i]));
+        }
+
+        int k = 0;
+        while(!pq.isEmpty()){
+            Pair curr = pq.poll();
+            ans[k] = curr.num;
+            k++;
+        }
+        return ans;
+    }
+}
