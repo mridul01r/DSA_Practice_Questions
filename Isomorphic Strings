@@ -1,0 +1,27 @@
+Isomorphic Strings
+Difficulty: Easy
+
+
+Solution - O(N)
+class Solution {
+    // Function to check if two strings are isomorphic.
+    public static boolean areIsomorphic(String s1, String s2) {
+        
+        char[] charS1 = new char[129];
+        char[] charS2 = new char[129];
+        
+        for(int i = 0; i < s1.length(); i++){
+            char c1 = s1.charAt(i), c2 = s2.charAt(i);
+            
+            if(charS1[c1] == 0 && charS2[c2] == 0){
+                charS1[c1] = c2;
+                charS2[c2] = c1;
+            }
+            else{
+                if(charS1[c1] != c2 || charS2[c2] != c1) return false;
+            }
+        }
+        return true;
+        
+    }
+}
