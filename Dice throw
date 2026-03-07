@@ -1,0 +1,30 @@
+Dice throw
+Difficulty: Medium
+
+Solution - O(n * x)
+class Solution {
+    public static int helper(int dice, int sum, int faces, int[][] dp){
+        if(dice == 0 && sum == 0) return 1;
+        if(dice == 0 || sum < 0) return 0;
+        
+        if(dp[dice][sum] != -1) return dp[dice][sum];
+        
+        int ways = 0;
+        for(int i = 1; i <= faces; i++){
+            ways += helper(dice - 1, sum - i, faces, dp);
+        }
+        
+        dp[dice][sum] = ways;
+        return ways;
+    }
+    static int noOfWays(int m, int n, int x) {
+        // code here
+        int[][] dp = new int[n + 1][x + 1];
+        for(int i = 0; i <= n; i++){
+            for(int j = 0; j <= x; j++){
+                dp[i][j] = -1;
+            }
+        }
+        return helper(n, x, m, dp);
+    }
+};
