@@ -1,0 +1,31 @@
+Remove Duplicates from a Sorted Linked List
+Difficulty: Easy
+
+Solution - O(n)
+
+/*
+class Node
+    {
+        int data;
+        Node next;
+        Node(int d) {data = d; next = null; }
+    }
+*/
+
+class Solution {
+    // Function to remove duplicates from sorted linked list.
+    Node removeDuplicates(Node head) {
+        // Your code here
+        Node temp = head.next;
+        Node ans = head;
+        
+        while(temp != null){
+            if(ans.data != temp.data){
+                ans.next = new Node(temp.data);
+                ans = ans.next;
+            }
+            temp = temp.next;
+        }
+        return head;
+    }
+}
