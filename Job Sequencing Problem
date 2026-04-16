@@ -1,0 +1,51 @@
+Job Sequencing Problem
+Difficulty: Medium
+
+Solution - O(n * log(n))
+
+class Solution {
+    class Pair {
+        int p, d;
+        Pair(int p, int d){
+            this.p = p;
+            this.d = d;
+        }
+    }
+
+    public ArrayList<Integer> jobSequencing(int[] deadline, int[] profit) {
+        int n = profit.length;
+
+        // Step 1: Create job list
+        List<Pair> jobs = new ArrayList<>();
+        int maxD = 0;
+
+        for(int i = 0; i < n; i++){
+            jobs.add(new Pair(profit[i], deadline[i]));
+            maxD = Math.max(maxD, deadline[i]);
+        }
+
+        // Step 2: Sort by profit descending
+        jobs.sort((a, b) -> b.p - a.p);
+
+        // Step 3: Store all free slots
+        TreeSet<Integer> slots = new TreeSet<>();
+        for(int i = 1; i <= maxD; i++){
+            slots.add(i);
+        }
+
+        int maxProfit = 0, count = 0;
+
+        // Step 4: Assign jobs
+        for(Pair job : jobs){
+            Integer availableSlot = slots.floor(job.d);
+
+            if(availableSlot != null){
+                maxProfit += job.p;
+                count++;
+                slots.remove(availableSlot);
+            }
+        }
+
+        return new ArrayList<>(Arrays.asList(count, maxProfit));
+    }
+}
